@@ -58,9 +58,9 @@ const MyTasks = () => {
                 <textarea placeholder="Enter task description"></textarea>
               </div>
               <div className="form-group">
-                <label>Assignee</label>
+                <label>Designation</label>
                 <select>
-                  <option>Select assignee</option>
+                  <option>Select Designation </option>
                   <option>John Doe</option>
                   <option>Jane Smith</option>
                   <option>Mike Johnson</option>
