@@ -1,7 +1,9 @@
 const nodemailer = require("nodemailer");
 const AdminModel = require("../models/AdminModels");
-const userModel = require("../models/UserModels")
-const PasswordGen = require("../Utils/PasswordGen")
+const userModel = require("../models/UserModels");
+const taskModel = require("../models/TaskModels")
+const PasswordGen = require("../Utils/PasswordGen");
+
 
 const adminLogin = async (req, res) => {
   console.log(req.body);
@@ -52,7 +54,7 @@ const CreateUser = async (req, res) => {
 
 Welcome to our platform! Below are your login credentials:
 
-Username: ${userEmail}
+Username: your email.
 Password: ${password}
 
 You can use these credentials to log in to your account. For security reasons, we recommend changing your password after your first login.
@@ -60,7 +62,7 @@ You can use these credentials to log in to your account. For security reasons, w
 If you didn't request this or need any assistance, please contact our support team immediately.
 
 Best regards,
-[Imran/Imran hussain]`
+[Imran hussain]`
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -75,20 +77,52 @@ Best regards,
 }
 const getUserDetails = async (req, res) => {
   console.log("okkk");
-  
+
   try {
     const userData = await userModel.find();
     console.log(userData);
-    
-     res.send(userData);
+
+    res.send(userData);
   } catch (error) {
     console.log(error);
 
   }
 }
 
+const taskAssign = async (req, res) => {
+  const { userId, title, description, dueDate, priority,assignee } = req.body;
+
+  try {
+    await taskModel.create({
+      userId,
+      title,
+      description,
+      dueDate,
+      priority,
+      assignee,
+      status: "pending"
+    });
+
+    res.status(201).send({ msg: "Task Assign Successfuly!" })
+  } catch (error) {
+    res.status(500).send({ msg: error })
+  }
+
+}
+
+const getAllTasks = async (req,res) => {
+  const allTasks = await taskModel.find();
+  try {
+    res.status(200).send(allTasks);
+  } catch (error) {
+    res.status(500).send({ msg: error });
+  }
+}
+
 module.exports = {
   adminLogin,
   CreateUser,
-  getUserDetails
+  getUserDetails,
+  taskAssign,
+  getAllTasks
 }

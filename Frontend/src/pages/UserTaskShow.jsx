@@ -1,30 +1,29 @@
 
 import axios from "axios";
 import "../css/dashboard.css";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const MyTasks = () => {
- const [tasks,setTasks] = useState([]);
- 
-const getTasks = async()=>{
-  try {
-    const res = await axios.get("http://localhost:3000/admin/gettasks");
-    console.log(res.data);
-    setTasks(res.data)
-    
-  } catch (error) {
-    console.log(error);
-    
+const UserTaskShow = () => {
+  const [tasks, setTasks] = useState([]);
+
+  const getTasks = async () => {
+    try {
+      const userData = localStorage.getItem("UserLogin");
+      const userId = JSON.parse(userData).userId;
+      const res = await axios.get(`http://localhost:3000/user/getusertasks/?id=${userId}`);
+      setTasks(res.data)
+    } catch (error) {
+      console.log(error);
+    }
   }
-}
 
-useEffect(()=>{
-getTasks();
-},[])
+  useEffect(() => {
+    getTasks();
+  }, [])
   return (
     <>
       <div className="dashboard-container" >
-        <div className="right-container" style={{padding:"10px 100px"}}>
+        <div className="right-container" style={{ padding: "10px 100px" }}>
           <div className="task-header">
             <h2>Task Dashboard</h2>
             <div className="task-filters">
@@ -97,4 +96,4 @@ getTasks();
   );
 };
 
-export default MyTasks;
+export default UserTaskShow;

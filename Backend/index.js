@@ -15,6 +15,7 @@ mongoose.connect(process.env.MONGO_DB).then(() => {
     console.log("DB is Connected Successfully!");
 });
 
+app.use("/admin",Routers);
 app.use("/user",Routers);
 
 app.listen(port, () => {

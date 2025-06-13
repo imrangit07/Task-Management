@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../css/GetUserDetails.css';
+import { toast } from "react-toastify";
 
 const GetUserDetails = () => {
     const [users, setUsers] = useState([]);
@@ -15,7 +16,7 @@ const GetUserDetails = () => {
 
     const getUserData = async () => {
         try {
-            const res = await axios.get('http://localhost:3000/user/getuser');
+            const res = await axios.get('http://localhost:3000/admin/getuser');
             setUsers(res.data);
         } catch (error) {
             console.log(error);
@@ -29,14 +30,33 @@ const GetUserDetails = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setTaskForm(prev => ({...prev,[name]: value}));
+        setTaskForm(prev => ({ ...prev, [name]: value }));
         console.log(taskForm);
-        
+
     };
 
     useEffect(() => {
         getUserData();
     }, []);
+
+    const handelSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await axios.post("http://localhost:3000/admin/taskassign", { ...taskForm, assignee: selectedUser.userName, userId: selectedUser._id });
+            toast.success("Task Assign Successfuly");
+            setTaskForm({
+                title: '',
+                description: '',
+                dueDate: '',
+                priority: 'medium'
+            })
+            setShowModal(false);
+
+        } catch (error) {
+            console.log(error.response.data.msg);
+
+        }
+    }
 
     return (
         <div className="user-details-container">
@@ -58,7 +78,7 @@ const GetUserDetails = () => {
                             <td>{user.userEmail}</td>
                             <td>{user.designation}</td>
                             <td>
-                                <button 
+                                <button
                                     className="assign-task-btn"
                                     onClick={() => handleAssignTask(user)}
                                 >
@@ -74,21 +94,21 @@ const GetUserDetails = () => {
                 <div className="modal-content">
                     <span className="close-btn" onClick={() => setShowModal(false)}>&times;</span>
                     <h2>Assign Task to <span className='user-name'>{selectedUser?.userName}</span></h2>
-                    <form >
+                    <form onSubmit={handelSubmit}>
                         <div className="form-group">
                             <label>Task Title</label>
-                            <input 
-                                type="text" 
-                                name="title" 
+                            <input
+                                type="text"
+                                name="title"
                                 value={taskForm.title}
                                 onChange={handleInputChange}
-                                required 
+                                required
                             />
                         </div>
                         <div className="form-group">
                             <label>Description</label>
-                            <textarea 
-                                name="description" 
+                            <textarea
+                                name="description"
                                 value={taskForm.description}
                                 onChange={handleInputChange}
                                 required
@@ -96,18 +116,18 @@ const GetUserDetails = () => {
                         </div>
                         <div className="form-group">
                             <label>Due Date</label>
-                            <input 
-                                type="date" 
-                                name="dueDate" 
+                            <input
+                                type="date"
+                                name="dueDate"
                                 value={taskForm.dueDate}
                                 onChange={handleInputChange}
-                                required 
+                                required
                             />
                         </div>
                         <div className="form-group">
                             <label>Priority</label>
-                            <select 
-                                name="priority" 
+                            <select
+                                name="priority"
                                 value={taskForm.priority}
                                 onChange={handleInputChange}
                             >

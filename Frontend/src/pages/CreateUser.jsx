@@ -3,7 +3,7 @@ import { useState } from "react";
 import "../css/dashboard.css";
 import axios from "axios";
 import { useEffect } from "react";
-import GetUserDetails from "../components/GetUserDetails";
+import GetUserDetails from "../pages/GetUserDetails";
 const CreateUser = () => {
     const [userData, setUserData] = useState({});
     const handelInput = (e) => {
@@ -14,7 +14,7 @@ const CreateUser = () => {
     const handelSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:3000/user/createuser', userData);
+            const res = await axios.post('http://localhost:3000/admin/createuser', userData);
             toast.success("user Created Successfuly");
         } catch (error) {
             console.log(error.response);

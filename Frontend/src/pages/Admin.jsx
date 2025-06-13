@@ -14,7 +14,7 @@ const navigate = useNavigate()
     e.preventDefault()
 
     try {
-      const res = await axios.post("http://localhost:3000/user/adminlogin",{admin,password});
+      const res = await axios.post("http://localhost:3000/admin/adminlogin",{admin,password});
        toast.success(res.data.msg);
   
        localStorage.setItem("Admin",JSON.stringify(res.data.adminData));

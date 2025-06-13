@@ -3,10 +3,12 @@ import AdminLogin from './pages/Admin'
 import Layout from './Layout'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
-import DashboardNab from './components/dashboardNab'
 import MyTasks from './pages/MyTasks'
 import CreateUser from './pages/CreateUser'
 import DashboardHome from './pages/DashboardHome'
+import UserDashboard from './pages/UserDashboard'
+import UserHome from './pages/UserHome'
+import UserTaskShow from './pages/UserTaskShow'
 const App = () => {
   return (
     <>
@@ -22,9 +24,15 @@ const App = () => {
           <Route index element={<DashboardHome/>} />
           <Route path='mytask' element={<MyTasks />} />
           <Route path='create' element={<CreateUser />} />
-          
           </Route>
-         
+
+        </Routes>
+        <Routes>
+          <Route path='/userdashboard' element={<UserDashboard/>}>
+          <Route index element={<UserHome/>} />
+          <Route path='usertask' element={<UserTaskShow/>} />
+          </Route>
+
         </Routes>
       </BrowserRouter>
 

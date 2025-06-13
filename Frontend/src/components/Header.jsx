@@ -7,9 +7,6 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeItem, setActiveItem] = useState('dashboard');
   const [isLogin, setLogin] = useState(false);
-
-
-  console.log("this is " , isLogin);
   
   const load = () => {
     const adminData = localStorage.getItem("Admin");
@@ -46,6 +43,9 @@ const Header = () => {
           <span className="logo-icon">📋</span>
           <span className="logo-text">TaskFlow</span>
         </div>
+        <div>
+          <h1 style={{textDecoration:"underline"}}>Task Management System</h1>
+        </div>
 
         <button
           className={`mobile-menu-button ${mobileMenuOpen ? 'open' : ''}`}
@@ -56,8 +56,7 @@ const Header = () => {
           <span></span>
         </button>
           <div>
-            <button className='user-btn'>Login</button>
-            <button className='user-signup'>signup</button>
+            <button className='user-btn' onClick={() => { navigate('/') }}>User</button>
             <button className='admin-btn' onClick={() => { navigate('adminlogin') }}>Admin</button>
           </div>
       </div>
