@@ -7,7 +7,9 @@ const TaskSchema = new mongoose.Schema({
     priority:String,
     assignee:String,
     status:String,
+    completedAt:String,
     userId:mongoose.Types.ObjectId
+
 })
 
 module.exports = mongoose.model("allTask",TaskSchema);

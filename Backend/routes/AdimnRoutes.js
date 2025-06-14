@@ -7,12 +7,15 @@ Router.post("/createuser",AdminController.CreateUser);
 Router.post("/taskassign",AdminController.taskAssign);
 Router.get("/getuser",AdminController.getUserDetails);
 Router.get("/gettasks",AdminController.getAllTasks);
+Router.delete("/deletetask/:id",AdminController.deleteTask);
+Router.put("/updatetask",AdminController.updateTask);
 
 
 // ----------USER ROUTERS--------------
 
 Router.post("/userlogin",UserController.UserLogin)
-Router.get("/getusertasks",UserController.getAllUserTasks);
+Router.get("/getusertasks",UserController.getAllUserTasks);  
+Router.patch("/changetaskstatus/:id",UserController.changeTaskStatus);
 
 
 module.exports = Router

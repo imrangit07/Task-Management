@@ -91,6 +91,7 @@ const getUserDetails = async (req, res) => {
 
 const taskAssign = async (req, res) => {
   const { userId, title, description, dueDate, priority,assignee } = req.body;
+  const date = new Date();
 
   try {
     await taskModel.create({
@@ -100,10 +101,32 @@ const taskAssign = async (req, res) => {
       dueDate,
       priority,
       assignee,
-      status: "pending"
+      status: "pending",
+      createdAt: date.toLocaleString('en-IN')
     });
 
     res.status(201).send({ msg: "Task Assign Successfuly!" })
+  } catch (error) {
+    res.status(500).send({ msg: error })
+  }
+
+}
+
+const updateTask = async (req, res) => {
+  const { id, title, description, dueDate, priority, status } = req.body;
+  const date = new Date();
+
+  try {
+    await taskModel.findByIdAndUpdate(id, {
+      title,
+      description,
+      dueDate,
+      priority,
+      status,
+      updateAt: date.toLocaleString('en-IN')
+    });
+
+    res.status(201).send({ msg: "Task Updated Successfuly!" })
   } catch (error) {
     res.status(500).send({ msg: error })
   }
@@ -119,10 +142,22 @@ const getAllTasks = async (req,res) => {
   }
 }
 
+const deleteTask = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await taskModel.findByIdAndDelete(id);
+    res.status(200).send({ msg: "Task deleted successfully" });
+  } catch (error) {
+    res.status(500).send({ msg: error });
+  }
+}
+
 module.exports = {
   adminLogin,
   CreateUser,
   getUserDetails,
   taskAssign,
-  getAllTasks
+  getAllTasks,
+  updateTask,
+  deleteTask
 }

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../css/Admin.css';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
 const UserLogin = () => {
     const [userEmail, setUserEmail] = useState("");
@@ -88,9 +88,6 @@ const UserLogin = () => {
 
                 </form>
             </div>
-            <ToastContainer
-                autoClose={3000}
-            />
         </div>
     );
 };

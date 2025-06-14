@@ -60,7 +60,7 @@ const UserDashboardNab = () => {
                                 onClick={() => handleNavClick('dashboard')}
                             >
                                 <i className="fas fa-tachometer-alt"></i>
-                                <span onClick={() => { navigate("/dashboard") }}>Dashboard</span>
+                                <span onClick={() => { navigate("/userdashboard") }}>Dashboard</span>
                             </li>
                             <li
                                 className={activeItem === 'tasks' ? 'active' : ''}

@@ -275,3 +275,54 @@
 .delete-btn:hover {
   background-color: #f5c6cb;
 }
+
+
+
+
+/* Add these styles to your existing dashboard.css */
+
+.status-selector {
+  margin-left: auto;
+}
+
+.status-dropdown {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Status-specific dropdown styles */
+.status-dropdown.pending {
+  background-color: #fff3cd;
+  color: #856404;
+  border-color: #ffeeba;
+}
+
+.status-dropdown.in-progress {
+  background-color: #cce5ff;
+  color: #004085;
+  border-color: #b8daff;
+}
+
+.status-dropdown.completed {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.status-dropdown:hover {
+  opacity: 0.9;
+}
+
+.status-dropdown:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+}

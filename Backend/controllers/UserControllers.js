@@ -30,7 +30,22 @@ const getAllUserTasks = async (req,res) => {
     res.status(500).send({ msg: error });
   }
 }
-module.exports = {
-    UserLogin,
-    getAllUserTasks
+
+const changeTaskStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const date = new Date();
+
+  try {
+   await taskModel.findByIdAndUpdate(
+      id,
+      { status: status,completedAt: status === "completed" ? date.toLocaleString('en-IN'): "" }
+    );
+    
+    res.status(200).send({ msg: "Task status updated successfully" });
+  } catch (error) {
+    res.status(500).send({ msg: error });
+  }
 }
+
+module.exports = { UserLogin, getAllUserTasks, changeTaskStatus };

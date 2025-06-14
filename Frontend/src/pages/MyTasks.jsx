@@ -1,30 +1,73 @@
 
 import axios from "axios";
 import "../css/dashboard.css";
-import { useState,useEffect } from "react";
+import '../css/GetUserDetails.css';
+
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const MyTasks = () => {
- const [tasks,setTasks] = useState([]);
- 
-const getTasks = async()=>{
-  try {
-    const res = await axios.get("http://localhost:3000/admin/gettasks");
-    console.log(res.data);
-    setTasks(res.data)
-    
-  } catch (error) {
-    console.log(error);
-    
-  }
-}
+  const [tasks, setTasks] = useState([]);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [taskForm, setTaskForm] = useState({
+    title: "",
+    description: "",
+    dueDate: "",
+    priority: "low"
+  });
 
-useEffect(()=>{
-getTasks();
-},[])
+
+  const getTasks = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/admin/gettasks");
+      console.log(res.data);
+      setTasks(res.data)
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+  const handelDeleteTask = async (taskId) => {
+    try {
+      const res = await axios.delete(`http://localhost:3000/admin/deletetask/${taskId}`);
+      toast.success(res.data.msg);
+      getTasks();
+    } catch (error) {
+      console.log("Error deleting task:", error);
+    }
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setTaskForm((prevForm) => ({
+      ...prevForm,
+      [name]: value
+    }));
+  };
+  const handelSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.put("http://localhost:3000/admin/updatetask", { ...taskForm, id: selectedTaskId });
+      toast.success(res.data.msg);
+      getTasks();
+      setShowModal(false);
+      setSelectedUser(null);
+      setSelectedTaskId(null);
+    } catch (error) {
+      console.log("Error creating task:", error);
+    }
+  };
+  useEffect(() => {
+    getTasks();
+  }, [])
   return (
     <>
       <div className="dashboard-container" >
-        <div className="right-container" style={{padding:"10px 100px"}}>
+        <div className="right-container" style={{ padding: "10px 100px" }}>
           <div className="task-header">
             <h2>Task Dashboard</h2>
             <div className="task-filters">
@@ -66,6 +109,8 @@ getTasks();
               <span className="stat-label">Completed</span>
             </div>
           </div>
+
+
           <div className="task-list">
             {tasks.map(task => (
               <div key={task.id} className={`task-card ${task.priority}`}>
@@ -80,17 +125,84 @@ getTasks();
                   <span className="task-assignee">{task.assignee}</span>
                   <div className="task-meta">
                     <span className="task-date">
-                      Due: {new Date(task.dueDate).toLocaleDateString()}
+                      Due: {new Date(task.dueDate).toLocaleDateString('en-IN')}
                     </span>
                     <div className="task-actions">
-                      <button className="edit-btn">Edit</button>
-                      <button className="delete-btn">Delete</button>
+                      <button className="edit-btn"
+                        onClick={() => {
+                          setShowModal(true);
+                          setSelectedUser(task.assignee);
+                          setSelectedTaskId(task._id);
+                          setTaskForm({
+                            title: task.title,
+                            description: task.description,
+                            dueDate: task.dueDate,
+                            priority: task.priority,
+                            status: task.status
+                          });
+                        }}
+                      >Edit</button>
+                      <button
+                        className="delete-btn"
+                        onClick={() => handelDeleteTask(task._id)}
+                      >Delete</button>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div className={`modal-overlay ${showModal ? 'active' : ''}`}>
+        <div className="modal-content">
+          <span className="close-btn" onClick={() => setShowModal(false)}>&times;</span>
+          <h2>Assign Task to <span className='user-name'>{selectedUser}</span></h2>
+          <form onSubmit={handelSubmit}>
+            <div className="form-group">
+              <label>Task Title</label>
+              <input
+                type="text"
+                name="title"
+                value={taskForm.title}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Description</label>
+              <textarea
+                name="description"
+                value={taskForm.description}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Due Date</label>
+              <input
+                type="date"
+                name="dueDate"
+                value={taskForm.dueDate}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Priority</label>
+              <select
+                name="priority"
+                value={taskForm.priority}
+                onChange={handleInputChange}
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+            <button type="submit" className="submit-btn">Assign Task</button>
+          </form>
         </div>
       </div>
     </>

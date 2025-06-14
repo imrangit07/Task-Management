@@ -1,9 +1,10 @@
-import { ToastContainer, toast } from "react-toastify";
+
 import { useState } from "react";
 import "../css/dashboard.css";
 import axios from "axios";
 import { useEffect } from "react";
 import GetUserDetails from "../pages/GetUserDetails";
+import { toast } from "react-toastify";
 const CreateUser = () => {
     const [userData, setUserData] = useState({});
     const handelInput = (e) => {
@@ -67,9 +68,6 @@ const CreateUser = () => {
                     <GetUserDetails />
 
                 </div>
-                <ToastContainer
-                    autoClose={3000}
-                />
             </div >
         </>
     );

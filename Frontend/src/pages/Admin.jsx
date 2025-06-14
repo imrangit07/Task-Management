@@ -4,7 +4,7 @@ import '../css/Admin.css';
 import axios from "axios";
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
 const AdminLogin = () => {
   const [admin,setAdmin]=useState("");
@@ -93,9 +93,6 @@ const navigate = useNavigate()
 
         </form>
       </div>
-      <ToastContainer 
-      autoClose={3000}
-      />
     </div>
   );
 };
